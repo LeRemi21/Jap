@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Japon 2026</title>
+<meta name="description" content="Carnet de voyage Japon — décembre 2026">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#9e1b1b">
+<meta name="format-detection" content="telephone=no">
+
+<!-- Installation sur l'écran d'accueil (iOS et Android) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Japon">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="haut">
+  <span class="sceau" aria-hidden="true">旅</span>
+  <h1 id="titre">Japon 2026</h1>
+  <button class="sos" type="button" data-a="vue" data-v="urgences" aria-label="Numéros d'urgence">SOS</button>
+</header>
+
+<main id="vue" tabindex="-1"></main>
+
+<!-- Onglets : le caractère japonais sert d'icône (aucune image à charger) -->
+<nav class="onglets" aria-label="Navigation principale">
+  <button type="button" data-a="vue" data-v="aujourdhui"><b aria-hidden="true">今</b>Aujourd'hui</button>
+  <button type="button" data-a="vue" data-v="itineraire"><b aria-hidden="true">旅</b>Itinéraire</button>
+  <button type="button" data-a="vue" data-v="taxi"><b aria-hidden="true">車</b>Taxi</button>
+  <button type="button" data-a="vue" data-v="yen"><b aria-hidden="true">円</b>Yen ⇄ €</button>
+  <button type="button" data-a="vue" data-v="depenses"><b aria-hidden="true">帳</b>Dépenses</button>
+  <button type="button" data-a="vue" data-v="plus"><b aria-hidden="true">他</b>Plus</button>
+</nav>
+
+<!-- Affichage plein écran (adresse pour le taxi, phrase à montrer) -->
+<div id="plein" class="plein" role="dialog" aria-modal="true" aria-label="Affichage en grand" hidden></div>
+
+<noscript><p style="padding:1rem">Cette appli a besoin de JavaScript.</p></noscript>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

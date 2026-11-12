@@ -1,0 +1,6 @@
+# Le carnet PDF ne doit jamais être publié
+Japon.pdf
+*.pdf
+
+# Réglages locaux de l'outil de développement
+.claude/
