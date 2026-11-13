@@ -996,7 +996,9 @@ const TRIP = {
         { id: "resa-bus", texte: "Bus Mishima Kawaguchiko Liner (10/12, 12h20, places 04A & 04B)" },
         { id: "resa-shinkansen", texte: "Shinkansen Hikari 717 (10/12, 15h46, voiture 6, 20D et 20E)" },
         { id: "adresses-ja", texte: "Adresses japonaises des hôtels comparées aux confirmations de réservation" },
-        { id: "maps", texte: "Google Maps hors ligne (Tokyo, Kawaguchiko, Kyoto, Osaka) et Google Traduction japonais hors ligne" },
+        { id: "trad-apple", texte: "Apple Traduire : japonais et français téléchargés pour l'usage hors ligne" },
+        { id: "trad-google", texte: "Google Traduction installée, japonais téléchargé hors ligne, caméra et conversation essayées une fois" },
+        { id: "maps", texte: "Google Maps hors ligne (Tokyo, Kawaguchiko, Kyoto, Osaka)" },
         { id: "vetements", texte: "Vêtements chauds : doudoune, pulls, bonnet, gants, écharpe, coupe-vent" },
         { id: "chaussures", texte: "Chaussures très confortables, petit sac à dos, parapluie compact" },
         { id: "batterie", texte: "Batterie externe, câbles, médicaments habituels" },
@@ -1020,6 +1022,22 @@ const TRIP = {
       ],
     },
   ],
+
+  /* ------------------- Traduire : accès aux applis de traduction ----------
+     L'appli ne traduit pas elle-même : elle renvoie vers Google Traduction et
+     rappelle comment utiliser Apple Traduire (qui n'a pas de lien d'ouverture). */
+  traduire: {
+    liens: [
+      { titre: "Photo d'un menu ou d'un panneau", sous: "Google Traduction · japonais → français", url: "https://translate.google.com/?sl=ja&tl=fr&op=images" },
+      { titre: "Texte ou conversation", sous: "Google Traduction · français ⇄ japonais", url: "https://translate.google.com/?sl=fr&tl=ja&op=translate" },
+    ],
+    modes: [
+      { titre: "Lire un menu, sans réseau", etapes: ["Ouvrir l'appli Apple Traduire, onglet « Appareil photo » (ou Google Traduction, bouton appareil photo)", "Choisir japonais → français", "Viser le texte : la traduction s'affiche par-dessus"] },
+      { titre: "Parler avec quelqu'un", etapes: ["Ouvrir Apple Traduire, onglet « Conversation » (ou Google Traduction, bouton « Conversation »)", "Choisir français ⇄ japonais", "Toucher le micro, parler, puis tendre le téléphone"] },
+      { titre: "Le plus rapide", etapes: ["L'appareil photo de l'iPhone reconnaît le texte : viser, toucher l'icône de texte en bas à droite, puis « Traduire »"] },
+    ],
+    note: "Hors ligne, ces applis ne fonctionnent que si le japonais a été téléchargé avant (voir la checklist).",
+  },
 
   /* ------------------------ Urgences (bonus, hors carnet) ----------------- */
   urgences: [

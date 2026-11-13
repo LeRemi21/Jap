@@ -373,12 +373,21 @@ function vuePlus() {
   const tuile = (vue, kanji, titre, sous) => `<button class="tuile" type="button" data-a="vue" data-v="${vue}">
       <b aria-hidden="true" lang="ja">${kanji}</b><span>${titre}<small>${sous}</small></span></button>`;
   return `<div class="tuiles">
+      ${tuile("traduire", "訳", "Traduire", "Menu, conversation")}
       ${tuile("phrases", "話", "Phrases", `${nbPhrases} phrases utiles`)}
       ${tuile("checklist", "済", "Checklist", `${faits} / ${tousLesPoints().length} cochés`)}
       ${tuile("meteo", "天", "Météo", "Décembre, par ville")}
       ${tuile("urgences", "急", "Urgences", "110 · 119 · ambassade")}
     </div>
     <p class="discret" style="margin-top:18px">Appli hors ligne : une fois installée sur l'écran d'accueil, tout fonctionne sans réseau (sauf les liens Google Maps).</p>`;
+}
+
+function vueTraduire() {
+  const t = TRIP.traduire;
+  return RETOUR + t.liens.map((l) => `<a class="btn lien-trad" href="${esc(l.url)}" target="_blank" rel="noopener"><span>${esc(l.titre)} ↗<small>${esc(l.sous)}</small></span></a>`).join("") +
+    `<p class="badge">${esc(t.note)}</p>` +
+    t.modes.map((m) => `<h2 class="titre-section">${esc(m.titre)}</h2><div class="bloc"><ol class="liste-simple">${m.etapes.map((e) => `<li>${esc(e)}</li>`).join("")}</ol></div>`).join("") +
+    `<button class="btn clair" type="button" data-a="vue" data-v="phrases" style="margin-top:14px">Phrases toutes prêtes (sans réseau)</button>`;
 }
 
 function vuePhrases() {
@@ -417,6 +426,7 @@ const VUES = {
   yen: ["Yen ⇄ €", vueYen],
   depenses: ["Dépenses", vueDepenses],
   plus: ["Plus", vuePlus],
+  traduire: ["Traduire", vueTraduire],
   phrases: ["Phrases", vuePhrases],
   checklist: ["Checklist", vueChecklist],
   meteo: ["Météo de décembre", vueMeteo],
@@ -427,7 +437,7 @@ function rendre(remonter) {
   const [titre, vue] = VUES[etat.vue];
   $("#titre").textContent = titre;
   $("#vue").innerHTML = vue();
-  const onglet = etat.vue in { phrases: 1, checklist: 1, meteo: 1, urgences: 1 } ? "plus" : etat.vue;
+  const onglet = etat.vue in { traduire: 1, phrases: 1, checklist: 1, meteo: 1, urgences: 1 } ? "plus" : etat.vue;
   for (const b of document.querySelectorAll(".onglets button")) {
     if (b.dataset.v === onglet) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
   }
