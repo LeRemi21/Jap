@@ -103,7 +103,7 @@ function htmlPrix(p) {
 }
 
 const GENRE = { trajet: "Trajet", lieu: "Lieu", info: "Info" };
-function htmlEtape(e, estProchain) {
+function htmlEtape(e, estProchain, rang = 0, passe = false) {
   const quand = e.heure
     ? `${fmtHeure(e.heure)}${e.arrivee ? `<small>→ ${fmtHeure(e.arrivee)}</small>` : ""}`
     : `<span class="moment">${esc(e.moment || "")}</span>`;
@@ -119,7 +119,7 @@ function htmlEtape(e, estProchain) {
       ${e.conseil ? `<p><b>Conseil :</b> ${esc(e.conseil)}</p>` : ""}</details>`;
   }
   const lien = e.maps ? lienExterne(e.maps, "Itinéraire Google Maps") : e.q ? lienExterne(mapsRecherche(e.q), "Voir sur Google Maps") : "";
-  return `<li class="etape ${esc(e.type)}${estProchain ? " prochain" : ""}">
+  return `<li class="etape ${esc(e.type)}${estProchain ? " prochain" : ""}${passe ? " passe" : ""}" style="--i:${Math.min(rang, 8)}">
     <div class="quand">${quand}</div>
     <div class="fiche">
       ${e.photo ? `<img class="photo" src="${esc(e.photo)}" alt="" width="640" height="427" loading="lazy">` : ""}
@@ -134,9 +134,11 @@ function htmlEtape(e, estProchain) {
     </div></li>`;
 }
 
-function htmlJour(jour, iProchain = -1) {
+// enCours : jour affiché = aujourd'hui ; les étapes avant la prochaine sont alors « passées »
+function htmlJour(jour, iProchain = -1, enCours = false) {
   const h = TRIP.hotels[jour.hotel];
-  return `<ol class="frise">${jour.etapes.map((e, i) => htmlEtape(e, i === iProchain)).join("")}</ol>
+  const passe = (i) => enCours && (iProchain < 0 || i < iProchain);
+  return `<ol class="frise">${jour.etapes.map((e, i) => htmlEtape(e, i === iProchain, i, passe(i))).join("")}</ol>
     ${h ? lienExterne(mapsVers(h.q), `Retour à l'hôtel · ${h.nom}`, "btn clair") : ""}`;
 }
 
@@ -178,7 +180,7 @@ function vueAujourdhui() {
            <div class="quoi">${e.heure ? fmtHeure(e.heure) + " — " : ""}${esc(e.titre)}</div></div>`
       : `<div class="bloc prochain-carte"><div class="label">Fin de journée</div><div class="quoi">Toutes les étapes du jour sont entamées.</div></div>`;
   }
-  h += htmlJour(jour, ip);
+  h += htmlJour(jour, ip, i === iAuj);
   if (etat.jour !== null) h += `<button class="btn" type="button" data-a="auj" style="margin-top:10px">Revenir à aujourd'hui</button>`;
   return h;
 }
@@ -195,7 +197,7 @@ function cleAujourdhui() {
 function vueItineraire() {
   const iAuj = indexAujourdhui();
   const jours = TRIP.jours.map((j, i) => `<details class="jour" ${i === iAuj ? "open" : ""}>
-      <summary><span class="j-num"><small>Jour</small>${j.n}</span>
+      <summary><span class="j-num${j.photo ? " j-vign" : ""}"${j.photo ? ` style="background-image:url('${esc(j.photo)}')"` : ""}><small>Jour</small>${j.n}</span>
         <span class="j-txt"><b>${esc(j.titre)}</b><span>${fmtDate(j.date, { weekday: "short", day: "numeric", month: "short" })} · ${esc(j.resume)}</span></span></summary>
       <div class="corps">${htmlJour(j)}</div></details>`).join("");
   const hotels = Object.values(TRIP.hotels).map((h) => `<div class="bloc hotel-ligne">
@@ -435,14 +437,17 @@ const VUES = {
 
 function rendre(remonter) {
   const [titre, vue] = VUES[etat.vue];
+  const zone = $("#vue");
   $("#titre").textContent = titre;
-  $("#vue").innerHTML = vue();
+  zone.classList.remove("entree");
+  zone.innerHTML = vue();
+  if (remonter) { void zone.offsetWidth; zone.classList.add("entree"); } // relance l'animation CSS
   const onglet = etat.vue in { traduire: 1, phrases: 1, checklist: 1, meteo: 1, urgences: 1 } ? "plus" : etat.vue;
   for (const b of document.querySelectorAll(".onglets button")) {
     if (b.dataset.v === onglet) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
   }
   if (etat.vue === "aujourdhui") etat.cle = cleAujourdhui();
-  if (remonter) $("#vue").scrollTop = 0;
+  if (remonter) zone.scrollTop = 0;
 }
 
 const ACTIONS = {

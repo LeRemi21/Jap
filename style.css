@@ -6,6 +6,7 @@
   --encre: #1d1a16;
   --encre2: #5c5247;
   --trait: #d8cdb9;
+  --ligne: #cdbfa6;     /* trait de la frise */
   --vermillon: #9e1b1b;   /* fonds (en-tête, boutons) */
   --accent: #9e1b1b;      /* texte et traits vermillon */
   --indigo: #1f3a5c;      /* trajets */
@@ -25,6 +26,7 @@
     --encre: #f3ede2;
     --encre2: #b9ad9d;
     --trait: #3b342c;
+    --ligne: #625649;
     --accent: #f08273;
     --indigo: #9dbfe6;
     --alerte-fond: #453610;
@@ -60,12 +62,17 @@ a { color: var(--accent); }
   flex: none;
   display: flex; align-items: center; gap: 12px;
   padding: calc(env(safe-area-inset-top) + 10px) 16px 10px;
-  background: var(--vermillon); color: #fff8ee;
+  color: #fff8ee;
+  /* vagues seigaiha à droite, fondues vers le titre pour garder la lisibilité */
+  background: linear-gradient(to right, var(--vermillon) 30%, transparent 85%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='%239e1b1b' stroke='%23fff8ee' stroke-opacity='.17' stroke-width='1.1'%3E%3Ccircle cx='20' cy='0' r='19'/%3E%3Ccircle cx='20' cy='0' r='14'/%3E%3Ccircle cx='20' cy='0' r='9'/%3E%3Ccircle cx='20' cy='0' r='4'/%3E%3Ccircle cx='0' cy='10' r='19'/%3E%3Ccircle cx='0' cy='10' r='14'/%3E%3Ccircle cx='0' cy='10' r='9'/%3E%3Ccircle cx='0' cy='10' r='4'/%3E%3Ccircle cx='40' cy='10' r='19'/%3E%3Ccircle cx='40' cy='10' r='14'/%3E%3Ccircle cx='40' cy='10' r='9'/%3E%3Ccircle cx='40' cy='10' r='4'/%3E%3Ccircle cx='20' cy='20' r='19'/%3E%3Ccircle cx='20' cy='20' r='14'/%3E%3Ccircle cx='20' cy='20' r='9'/%3E%3Ccircle cx='20' cy='20' r='4'/%3E%3C/g%3E%3C/svg%3E") right center / 40px 20px, var(--vermillon);
 }
+/* sceau hanko : encre vermillon sur papier, double cadre, posé un peu de travers */
 .sceau {
   width: 36px; height: 36px; flex: none;
   display: grid; place-items: center;
-  border: 1.5px solid currentColor; border-radius: 7px;
+  background: #fff8ee; color: #9e1b1b;
+  border-radius: 6px 9px 7px 10px; transform: rotate(-5deg);
+  box-shadow: inset 0 0 0 2px #fff8ee, inset 0 0 0 3.5px #9e1b1b, 0 1px 3px rgba(0, 0, 0, .25);
   font: 700 21px/1 var(--mincho);
 }
 .haut h1 { flex: 1; font: 600 23px/1.1 var(--serif); letter-spacing: .01em; }
@@ -159,8 +166,28 @@ fieldset.champ legend { padding: 0; font-size: 13.5px; font-weight: 700; color: 
 .prochain-carte .quoi { font: 600 21px/1.25 var(--serif); margin-top: 2px; }
 
 /* frise horaire */
-.frise { list-style: none; padding: 0; }
-.etape { display: grid; grid-template-columns: 56px 1fr; gap: 10px; padding-bottom: 12px; }
+.frise { list-style: none; padding: 0; --fond-frise: var(--papier); }
+.etape { position: relative; display: grid; grid-template-columns: 52px 1fr; column-gap: 24px; padding-bottom: 12px; }
+/* trait vertical (63px = colonne heure 52 + moitié de l'écart 12 − 1) */
+.etape::before { content: ""; position: absolute; left: 63px; width: 2px; top: 0; bottom: 0; background: var(--ligne); }
+.etape:first-child::before { top: 19px; }
+.etape:last-child::before { bottom: auto; height: 19px; }
+.etape:only-child::before { display: none; }
+/* pastille : creuse à venir, pleine une fois passée */
+.etape::after {
+  content: ""; position: absolute; left: 57px; top: 12px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--fond-frise); border: 3px solid var(--accent); box-sizing: border-box;
+}
+.etape.trajet::after { border-color: var(--indigo); }
+.etape.info::after { border-color: var(--encre2); }
+.etape.passe::before { background: var(--accent); }
+.etape.passe::after { background: var(--accent); border-color: var(--accent); }
+.etape.passe .fiche, .etape.passe .quand { opacity: .6; }
+.etape.prochain::after { background: var(--accent); border-color: var(--accent); animation: pouls 2.2s ease-out infinite; }
+@keyframes pouls {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 10px transparent; }
+}
 .quand { text-align: right; padding-top: 12px; font-weight: 700; font-size: 15.5px; font-variant-numeric: tabular-nums; }
 .quand small { display: block; font-weight: 500; font-size: 12.5px; color: var(--encre2); }
 .quand .moment { font: italic 600 13.5px/1.2 var(--serif); color: var(--encre2); }
@@ -189,7 +216,7 @@ details.plus-info li + li { margin-top: 4px; }
 }
 
 /* ----------------------------- Itinéraire ---------------------------- */
-details.jour { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; margin-bottom: 10px; }
+details.jour { --fond-frise: var(--carte); background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; margin-bottom: 10px; }
 details.jour > summary {
   list-style: none; cursor: pointer; padding: 12px 14px; min-height: 60px;
   display: grid; grid-template-columns: auto 1fr auto; column-gap: 12px; align-items: center;
@@ -199,6 +226,14 @@ details.jour > summary::after { content: "＋"; color: var(--accent); font-size:
 details.jour[open] > summary::after { content: "－"; }
 .j-num { font: 700 22px/1 var(--serif); color: var(--accent); text-align: center; min-width: 34px; }
 .j-num small { display: block; font: 600 10px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--encre2); }
+/* vignette photo du jour, numéro par-dessus */
+.j-vign {
+  width: 58px; height: 58px; padding: 5px 7px; border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; text-align: left;
+  background: #1d1a16 center / cover no-repeat; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+  box-shadow: inset 0 -34px 26px -10px rgba(0, 0, 0, .7);
+}
+.j-vign small { color: rgba(255, 255, 255, .9); }
 .j-txt b { display: block; font: 600 17.5px/1.25 var(--serif); }
 .j-txt span { font-size: 13.5px; color: var(--encre2); }
 details.jour > .corps { padding: 4px 12px 12px 4px; }
@@ -320,3 +355,32 @@ input[type="number"], input[type="text"], select {
 .liste-simple li + li { margin-top: 4px; }
 /* nombre impair de tuiles : la première prend toute la largeur */
 .tuile:first-child:nth-last-child(odd) { grid-column: 1 / -1; min-height: 92px; }
+
+/* ------------------------------ Animations ---------------------------
+   Discrètes, et toutes coupées si l'iPhone est réglé sur « Réduire les animations ». */
+@keyframes entree { from { opacity: 0; transform: translateY(8px); } }
+@keyframes deplie { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes trait { from { transform: scaleX(0); } }
+
+/* changement d'écran ou de jour : le contenu glisse, les étapes arrivent en cascade */
+#vue.entree > * { animation: entree .32s cubic-bezier(.2, .7, .2, 1) both; }
+#vue.entree .etape { animation: entree .4s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 45ms + 60ms); }
+
+/* détails qui se déplient */
+details[open] > :not(summary) { animation: deplie .28s ease-out; }
+
+/* onglet actif : le trait vermillon se déroule */
+.onglets [aria-current="page"]::before { animation: trait .25s ease-out; }
+.onglets b { transition: transform .15s ease; }
+.onglets button:active b { transform: scale(.88); }
+
+/* boutons qui s'enfoncent au toucher */
+.btn, .tuile, .phrase, .lien-maps, .pave button, .nav-jour button, .lieu-taxi button, .urgence a, .sos, details.jour > summary {
+  transition: transform .12s ease, background-color .2s ease;
+}
+.btn:active, .tuile:active, .phrase:active, .lien-maps:active, .pave button:active, .nav-jour button:active,
+.lieu-taxi button:active, .urgence a:active, .sos:active, details.jour > summary:active { transform: scale(.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
