@@ -550,4 +550,14 @@ addEventListener("orientationchange", ajusterHauteur);
 rendre();
 
 // Hors ligne : le service worker met tous les fichiers en cache dès la première visite
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+// Quand une nouvelle version s'installe, on recharge une fois pour l'afficher tout de suite
+// (pas au tout premier lancement, où il n'y avait pas encore de version précédente).
+if ("serviceWorker" in navigator) {
+  const versionPrecedente = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (versionPrecedente) location.reload(); });
+  navigator.serviceWorker.register("sw.js").then((r) => r.update()).catch(() => {});
+  // iPhone : l'appli installée est souvent reprise sans être relancée, on vérifie aussi au retour
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) navigator.serviceWorker.getRegistration().then((r) => r && r.update()).catch(() => {});
+  });
+}

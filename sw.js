@@ -1,7 +1,7 @@
 /* Service worker : rend l'appli 100 % utilisable hors ligne.
    Les fichiers se rafraîchissent tout seuls en arrière-plan quand il y a du réseau.
    Pour forcer un nouveau téléchargement complet, augmenter le numéro (v2, v3…). */
-const CACHE = "japon-v6";
+const CACHE = "japon-v8";
 
 // La liste des photos est lue dans data.js : rien à recopier ici quand on en ajoute
 importScripts("data.js");
@@ -20,9 +20,9 @@ const FICHIERS = [
   ...new Set(PHOTOS),
 ];
 
-// Installation : tout est mis en cache d'un coup
+// Installation : tout est mis en cache d'un coup (« reload » : pas de copie périmée du cache HTTP)
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FICHIERS)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FICHIERS.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 // Activation : on supprime les caches des anciennes versions
