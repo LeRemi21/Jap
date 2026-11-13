@@ -524,6 +524,19 @@ function battement() {
 setInterval(battement, 30000);
 document.addEventListener("visibilitychange", battement);
 
+// iPhone, appli installée : avec la barre d'état translucide, iOS annonce une hauteur de page
+// plus courte que l'écran (il manque la hauteur de la barre d'état) et laisse un vide en bas.
+// On impose donc la vraie hauteur de l'écran. Sans effet dans Safari ou sur un autre appareil.
+function ajusterHauteur() {
+  if (!navigator.standalone) return;
+  const portrait = matchMedia("(orientation: portrait)").matches;
+  const ecran = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
+  document.documentElement.style.setProperty("--hauteur", Math.max(innerHeight, ecran) + "px");
+}
+ajusterHauteur();
+addEventListener("resize", ajusterHauteur);
+addEventListener("orientationchange", ajusterHauteur);
+
 rendre();
 
 // Hors ligne : le service worker met tous les fichiers en cache dès la première visite

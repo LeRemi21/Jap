@@ -38,7 +38,7 @@ html { -webkit-text-size-adjust: 100%; height: 100%; }
 /* Coquille d'appli : en-tête et onglets fixes, seul <main> défile.
    (Évite les décalages de la barre du bas sur iPhone avec les pages courtes.) */
 body {
-  margin: 0; height: 100%; height: 100dvh; overflow: hidden;
+  margin: 0; height: 100%; height: var(--hauteur, 100dvh); overflow: hidden;
   display: flex; flex-direction: column;
   font: 17px/1.45 var(--sans);
   color: var(--encre);
