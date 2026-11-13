@@ -227,12 +227,10 @@ function ouvrirGrand({ intro, ja, sous, romaji, fr }) {
     <p class="romaji">${esc(romaji)}</p><p class="fr">${esc(fr)}</p>
     <button class="btn" type="button" data-a="fermer">Fermer</button>`;
   p.hidden = false;
-  document.body.style.overflow = "hidden";
   $("button", p).focus();
 }
 function fermerGrand() {
   $("#plein").hidden = true;
-  document.body.style.overflow = "";
 }
 
 /* ---------- 4. Yen ⇄ € ---------- */
@@ -434,7 +432,7 @@ function rendre(remonter) {
     if (b.dataset.v === onglet) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
   }
   if (etat.vue === "aujourdhui") etat.cle = cleAujourdhui();
-  if (remonter) window.scrollTo(0, 0);
+  if (remonter) $("#vue").scrollTop = 0;
 }
 
 const ACTIONS = {
