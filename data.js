@@ -1028,14 +1028,21 @@ const TRIP = {
      rappelle comment utiliser Apple Traduire (qui n'a pas de lien d'ouverture). */
   traduire: {
     liens: [
-      { titre: "Photo d'un menu ou d'un panneau", sous: "Google Traduction · japonais → français", url: "https://translate.google.com/?sl=ja&tl=fr&op=images" },
-      { titre: "Texte ou conversation", sous: "Google Traduction · français ⇄ japonais", url: "https://translate.google.com/?sl=fr&tl=ja&op=translate" },
+      // Liens d'ouverture d'applis iPhone. « googletranslate:// » n'est pas documenté par Google : à tester.
+      { titre: "Ouvrir Google Traduction", sous: "Appli iPhone · japonais → français", url: "googletranslate://?sl=ja&tl=fr" },
+      // Apple Traduire n'a pas de lien direct : on passe par un raccourci à créer une fois (voir « raccourci » ci-dessous).
+      { titre: "Ouvrir Apple Traduire", sous: "Via le raccourci « Traduire Japon »", url: "shortcuts://run-shortcut?name=Traduire%20Japon" },
+      { titre: "Google Traduction (site web)", sous: "Secours si les applis ne s'ouvrent pas · réseau requis", url: "https://translate.google.com/?sl=ja&tl=fr&op=images", secours: true },
     ],
     modes: [
       { titre: "Lire un menu, sans réseau", etapes: ["Ouvrir l'appli Apple Traduire, onglet « Appareil photo » (ou Google Traduction, bouton appareil photo)", "Choisir japonais → français", "Viser le texte : la traduction s'affiche par-dessus"] },
       { titre: "Parler avec quelqu'un", etapes: ["Ouvrir Apple Traduire, onglet « Conversation » (ou Google Traduction, bouton « Conversation »)", "Choisir français ⇄ japonais", "Toucher le micro, parler, puis tendre le téléphone"] },
       { titre: "Le plus rapide", etapes: ["L'appareil photo de l'iPhone reconnaît le texte : viser, toucher l'icône de texte en bas à droite, puis « Traduire »"] },
     ],
+    raccourci: {
+      titre: "À faire une fois : le raccourci Apple Traduire",
+      etapes: ["Ouvrir l'appli Raccourcis, toucher +", "Ajouter l'action « Ouvrir l'app » et choisir « Traduire »", "Nommer le raccourci exactement : Traduire Japon", "Au premier lancement depuis ici, autoriser l'ouverture"],
+    },
     note: "Hors ligne, ces applis ne fonctionnent que si le japonais a été téléchargé avant (voir la checklist).",
   },
 
