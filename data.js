@@ -996,7 +996,6 @@ const TRIP = {
         { id: "resa-bus", texte: "Bus Mishima Kawaguchiko Liner (10/12, 12h20, places 04A & 04B)" },
         { id: "resa-shinkansen", texte: "Shinkansen Hikari 717 (10/12, 15h46, voiture 6, 20D et 20E)" },
         { id: "adresses-ja", texte: "Adresses japonaises des hôtels comparées aux confirmations de réservation" },
-        { id: "trad-apple", texte: "Apple Traduire : japonais et français téléchargés pour l'usage hors ligne" },
         { id: "trad-google", texte: "Google Traduction installée, japonais téléchargé hors ligne, caméra et conversation essayées une fois" },
         { id: "maps", texte: "Google Maps hors ligne (Tokyo, Kawaguchiko, Kyoto, Osaka)" },
         { id: "vetements", texte: "Vêtements chauds : doudoune, pulls, bonnet, gants, écharpe, coupe-vent" },
@@ -1024,25 +1023,18 @@ const TRIP = {
   ],
 
   /* ------------------- Traduire : accès aux applis de traduction ----------
-     L'appli ne traduit pas elle-même : elle renvoie vers Google Traduction et
-     rappelle comment utiliser Apple Traduire (qui n'a pas de lien d'ouverture). */
+     L'appli ne traduit pas elle-même : elle ouvre Google Traduction. */
   traduire: {
     liens: [
       // Liens d'ouverture d'applis iPhone. « googletranslate:// » n'est pas documenté par Google : à tester.
       { titre: "Ouvrir Google Traduction", sous: "Appli iPhone · japonais → français", url: "googletranslate://?sl=ja&tl=fr" },
-      // Apple Traduire n'a pas de lien direct : on passe par un raccourci à créer une fois (voir « raccourci » ci-dessous).
-      { titre: "Ouvrir Apple Traduire", sous: "Via le raccourci « Traduire Japon »", url: "shortcuts://run-shortcut?name=Traduire%20Japon" },
       { titre: "Google Traduction (site web)", sous: "Secours si les applis ne s'ouvrent pas · réseau requis", url: "https://translate.google.com/?sl=ja&tl=fr&op=images", secours: true },
     ],
     modes: [
-      { titre: "Lire un menu, sans réseau", etapes: ["Ouvrir l'appli Apple Traduire, onglet « Appareil photo » (ou Google Traduction, bouton appareil photo)", "Choisir japonais → français", "Viser le texte : la traduction s'affiche par-dessus"] },
-      { titre: "Parler avec quelqu'un", etapes: ["Ouvrir Apple Traduire, onglet « Conversation » (ou Google Traduction, bouton « Conversation »)", "Choisir français ⇄ japonais", "Toucher le micro, parler, puis tendre le téléphone"] },
+      { titre: "Lire un menu, sans réseau", etapes: ["Ouvrir Google Traduction et toucher le bouton appareil photo", "Choisir japonais → français", "Viser le texte : la traduction s'affiche par-dessus"] },
+      { titre: "Parler avec quelqu'un", etapes: ["Ouvrir Google Traduction et toucher « Conversation »", "Choisir français ⇄ japonais", "Toucher le micro, parler, puis tendre le téléphone"] },
       { titre: "Le plus rapide", etapes: ["L'appareil photo de l'iPhone reconnaît le texte : viser, toucher l'icône de texte en bas à droite, puis « Traduire »"] },
     ],
-    raccourci: {
-      titre: "À faire une fois : le raccourci Apple Traduire",
-      etapes: ["Ouvrir l'appli Raccourcis, toucher +", "Ajouter l'action « Ouvrir l'app » et choisir « Traduire »", "Nommer le raccourci exactement : Traduire Japon", "Au premier lancement depuis ici, autoriser l'ouverture"],
-    },
     note: "Hors ligne, ces applis ne fonctionnent que si le japonais a été téléchargé avant (voir la checklist).",
   },
 

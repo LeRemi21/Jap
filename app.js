@@ -386,7 +386,7 @@ function vueTraduire() {
   const t = TRIP.traduire;
   return RETOUR + t.liens.map((l) => `<a class="btn lien-trad${l.secours ? " clair" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener"><span>${esc(l.titre)} ↗<small>${esc(l.sous)}</small></span></a>`).join("") +
     `<p class="badge">${esc(t.note)}</p>` +
-    [t.raccourci, ...t.modes].map((m) => `<h2 class="titre-section">${esc(m.titre)}</h2><div class="bloc"><ol class="liste-simple">${m.etapes.map((e) => `<li>${esc(e)}</li>`).join("")}</ol></div>`).join("") +
+    t.modes.map((m) => `<h2 class="titre-section">${esc(m.titre)}</h2><div class="bloc"><ol class="liste-simple">${m.etapes.map((e) => `<li>${esc(e)}</li>`).join("")}</ol></div>`).join("") +
     `<button class="btn clair" type="button" data-a="vue" data-v="phrases" style="margin-top:14px">Phrases toutes prêtes (sans réseau)</button>`;
 }
 

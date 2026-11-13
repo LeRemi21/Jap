@@ -1,7 +1,7 @@
 /* Service worker : rend l'appli 100 % utilisable hors ligne.
    Les fichiers se rafraîchissent tout seuls en arrière-plan quand il y a du réseau.
    Pour forcer un nouveau téléchargement complet, augmenter le numéro (v2, v3…). */
-const CACHE = "japon-v5";
+const CACHE = "japon-v6";
 
 // La liste des photos est lue dans data.js : rien à recopier ici quand on en ajoute
 importScripts("data.js");
